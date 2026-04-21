@@ -1,0 +1,29 @@
+# ByteTrack Configuration for Dashcam Proximity Detection
+# Tuned for high-speed dashcam scenarios with motion blur recovery
+
+tracker_type: bytetrack
+
+# ── Track Initialization ────────────────────────────────────────────────
+# Minimum confidence to create a NEW track
+track_high_thresh: 0.25
+
+# ByteTrack's secret weapon: re-associate lost tracks using LOW-confidence
+# detections. Critical for dashcam where motion blur drops confidence.
+track_low_thresh: 0.1
+
+# Confidence threshold for a detection to be considered "new" on first frame
+new_track_thresh: 0.3
+
+# ── Track Lifecycle ─────────────────────────────────────────────────────
+# Number of frames to keep a lost track alive before deletion (increased to reduce flickering)
+track_buffer: 90
+
+# IoU threshold for matching detections to existing tracks
+match_thresh: 0.90
+
+# ── Feature Settings ────────────────────────────────────────────────────
+# Proximity margin for merging overlapping tracks (in pixels)
+proximity_thresh: 0.5
+
+# Use appearance features (ReID) — disabled for speed
+fuse_score: true

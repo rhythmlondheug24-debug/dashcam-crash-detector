@@ -1,0 +1,30 @@
+# Python environments
+venv/
+env/
+__pycache__/
+*.pyc
+
+# AI Model weights (downloaded automatically, no need to upload to GitHub)
+*.pt
+*.pth
+yolo11s.pt
+
+# Video files (don't upload heavy dashcam footage to GitHub)
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Output screenshots
+*_screenshots/
+*.jpg
+*.jpeg
+*.png
+
+# Gradio/OS temporary files
+flagged/
+.DS_Store
+Thumbs.db
+
+# Private code backups
+Source_Code_Readable/
