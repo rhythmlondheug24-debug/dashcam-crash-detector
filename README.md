@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.14-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.11%2Bcu128-ee4c2c)
-![YOLO](https://img.shields.io/badge/YOLO-v11s-yellow)
+![YOLO](https://img.shields.io/badge/YOLO-26X-yellow)
 ![Gradio](https://img.shields.io/badge/Gradio-6.13-ff7c00)
 
 A high-performance, GPU-accelerated video analysis pipeline designed for real-time vehicle proximity and crash detection from dashcam footage. 
@@ -11,12 +11,13 @@ Built specifically for NVIDIA RTX 50-series (Blackwell) hardware but backwards c
 
 ## ✨ Features
 
-- **Real-Time Object Detection**: Uses the latest **YOLO11s** model for fast and accurate vehicle detection (cars, trucks, buses, motorcycles).
+- **Real-Time Object Detection**: Uses the latest **YOLO26X** (Extra Large) model for maximum accuracy vehicle detection (cars, trucks, buses, motorcycles).
 - **Time-to-Collision (TTC) Math**: Calculates approach speeds based on bounding box growth rates to estimate seconds until impact.
 - **Smart Tracking**: Integrates **ByteTrack** with tuned configuration specifically designed to handle high-speed dashcam motion blur and reduce flickering.
 - **Crash Detection**: Detects rapid approach events (>8% bounding box growth over 10 frames) and triggers dynamic visual alerts.
 - **Browser-Ready Output**: Automatically transcodes processed video to H.264 using a statically linked FFmpeg binary for seamless browser playback.
 - **Premium Web UI**: Features a dark-themed Gradio 6.0 interface with live progress tracking, Markdown summary reports, and a "Top Danger Frames" screenshot gallery.
+- **Ownership Watermark**: Every processed video is stamped with a permanent visual watermark for intellectual property protection.
 
 ## 🛠️ Hardware Requirements
 
@@ -29,13 +30,13 @@ This repository includes an automated batch script that handles all virtual envi
 
 1. Clone the repository:
    ```cmd
-   git clone https://github.com/yourusername/vehicle-proximity-detection.git
-   cd vehicle-proximity-detection
+   git clone https://github.com/rhythmlondheug24-debug/dashcam-crash-detector.git
+   cd dashcam-crash-detector
    ```
 
 2. Run the automated installer:
    - Double-click `setup_and_run.bat`
-   - *Note: On the very first run, it will download PyTorch (~2.5GB) and the YOLO11s model weights (`yolo11s.pt` ~18MB).*
+   - *Note: On the very first run, it will download PyTorch (~2.5GB) and the YOLO26X model weights (`yolo26x.pt` ~130MB).*
 
 3. The script will automatically launch the Gradio web server at `http://localhost:7860`.
 
@@ -47,10 +48,10 @@ This repository includes an automated batch script that handles all virtual envi
 - `setup_and_run.bat`: One-click environment bootstrap and launch script.
 - `requirements.txt`: Python dependencies.
 
-## 🧠 What is `yolo11s.pt`?
+## 🧠 What is `yolo26x.pt`?
 
-If you see a `yolo11s.pt` file in your directory, **these are the AI's "brains."** 
-It stands for "PyTorch Tensor" (`.pt`). It contains the pre-trained weights (the mathematical matrices) that teach the YOLOv11 algorithm what a car, truck, or motorcycle looks like. The script downloads this automatically from GitHub the first time you run it.
+If you see a `yolo26x.pt` file in your directory, **these are the AI's "brains."** 
+It stands for "PyTorch Tensor" (`.pt`). It contains the pre-trained weights (the mathematical matrices) that teach the YOLO26 algorithm what a car, truck, or motorcycle looks like. YOLO26 (released January 2026) is the latest generation with native NMS-free inference for significantly lower latency. The script downloads this automatically from Ultralytics the first time you run it.
 
 ## 📝 License
 **Copyright © 2026 Rhythm Londhe. All Rights Reserved.**

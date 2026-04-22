@@ -217,7 +217,7 @@ def create_ui():
 
                 gr.Markdown(
                     "**Supported:** `.MP4`, `.MOV` &nbsp;|&nbsp; "
-                    "**Model:** YOLOv11s &nbsp;|&nbsp; "
+                    "**Model:** YOLO26X &nbsp;|&nbsp; "
                     "**Inference:** FP16 CUDA\n\n"
                     "🟢 Green box = Safe &nbsp;|&nbsp; "
                     "🔴 Red box = Threat &nbsp;|&nbsp; "

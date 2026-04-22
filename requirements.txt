@@ -14,7 +14,7 @@
 # ============================================================================
 
 # YOLOv11 / YOLOv10 object detection + ByteTrack integration
-ultralytics>=8.3.0
+ultralytics>=8.4.0
 
 # OpenCV for video I/O and frame rendering
 opencv-python>=4.10.0

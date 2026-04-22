@@ -1,20 +1,21 @@
 """
-Vehicle Proximity Detection System v2
+Vehicle Proximity Detection System v3
 =======================================
-Production-ready dashcam analysis pipeline using YOLOv11s + ByteTrack.
+Production-ready dashcam analysis pipeline using YOLO26X + ByteTrack.
 Detects vehicles, tracks them, estimates time-to-collision, detects
 crash moments, and triggers dynamic visual alerts.
 
 Hardware Target: NVIDIA RTX 5050 (8GB VRAM), 24GB System RAM
 Inference: FP16 CUDA-only | Tracking: ByteTrack
 
-v2 Improvements:
-  - Upgraded model: yolo11s (small) for better accuracy
+v3 Improvements:
+  - Upgraded model: YOLO26X (Extra Large, NMS-free) for maximum accuracy
   - Time-to-Collision (TTC) estimation per vehicle
   - Crash moment detection via bbox growth rate analysis
   - Auto-export top danger frame screenshots
   - H.264 output codec for browser/Gradio compatibility
   - Post-processing summary with timestamps
+  - Visual ownership watermark on every frame
 """
 
 import sys
@@ -53,8 +54,8 @@ FONT_SCALE = 0.55
 FONT_THICKNESS = 1
 BORDER_THICKNESS = 10
 
-# Model config — yolo11s for better accuracy on 8GB VRAM
-MODEL_NAME = "yolo11s.pt"
+# Model config — YOLO26x for maximum accuracy and NMS-free speed
+MODEL_NAME = "yolo26x.pt"
 CONFIDENCE_THRESHOLD = 0.20
 TRACKER_CONFIG = "tracker_config.yaml"
 
@@ -249,7 +250,8 @@ def annotate_vehicle(frame, x1, y1, x2, y2, track_id, is_threat, ratio, ttc=None
         label = f"WARNING: PROXIMITY [{track_id}] {ratio:.0%}"
         if ttc is not None:
             label += f" | TTC: {ttc}s"
-        draw_text_with_bg(frame, label, (x1, y1 - 6), FONT_SCALE,
+        label_y = max(25, y1 - 6)  # Prevent label from going off-screen
+        draw_text_with_bg(frame, label, (x1, label_y), FONT_SCALE,
                           COLOR_WHITE, COLOR_THREAT, alpha=0.85)
     else:
         cv2.rectangle(frame, (x1, y1), (x2, y2), COLOR_SAFE, 2)
@@ -449,7 +451,7 @@ def process_video(input_path: str, output_path: str = None, progress_callback=No
                 device=device,
                 half=True,
                 verbose=False,
-                imgsz=2560,  # Maxed out resolution for perfect detection of static/distant cars
+                imgsz=1280,  # Lowered from 2560 to prevent AI hallucinations on concrete pillars
             )
 
             # ── Process Detections ──────────────────────────────────────
@@ -520,7 +522,8 @@ def process_video(input_path: str, output_path: str = None, progress_callback=No
                         danger_frames.pop()
 
             # ── Watermark ───────────────────────────────────────────────
-            cv2.putText(frame, 'PROCESSED BY RHYTHM LONDHE', (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(frame, 'PROCESSED BY RHYTHM LONDHE', (20, 50),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
             # ── Write Frame ─────────────────────────────────────────────
             out.write(frame)
@@ -592,6 +595,9 @@ def process_video(input_path: str, output_path: str = None, progress_callback=No
         summary += f"Location: `{screenshots_dir}`\n"
 
     print(f"\n[DONE] Output: {final_path}")
+
+    # Give Windows/Antivirus a moment to release file locks before Gradio reads it
+    time.sleep(1.5)
 
     return {
         "output_path": final_path,
