@@ -20,11 +20,13 @@ def run_benchmark():
         model.track(dummy_frame, persist=True, device=device, half=True, verbose=False)
         
     print("Benchmarking model (100 frames)...")
-    torch.cuda.synchronize()
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
     t0 = time.perf_counter()
     for _ in range(100):
         model.track(dummy_frame, persist=True, device=device, half=True, verbose=False)
-    torch.cuda.synchronize()
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
     t1 = time.perf_counter()
     
     fps = 100 / (t1 - t0)

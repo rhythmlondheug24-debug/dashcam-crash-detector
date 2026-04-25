@@ -31,3 +31,6 @@ lap>=0.5.0
 # imageio-ffmpeg — ships a static ffmpeg binary for H.264 video conversion
 # Required so the output video plays in Gradio / browsers
 imageio-ffmpeg>=0.5.0
+
+# Gradio web UI
+gradio>=6.13.0
